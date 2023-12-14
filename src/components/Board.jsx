@@ -10,11 +10,14 @@ import {
 } from '@dnd-kit/core'
 import { SortableContext, arrayMove } from '@dnd-kit/sortable'
 import { createPortal } from 'react-dom'
+import Task from './Task'
 
 const Board = () => {
   const [lists, setLists] = useState([])
-  const [activeList, setActiveList] = useState(null)
   const [tasks, setTasks] = useState([])
+
+  const [activeList, setActiveList] = useState(null)
+  const [activeTask, setActiveTask] = useState(null)
 
   const listsId = useMemo(() => lists.map((list) => list.id), [lists])
 
@@ -73,11 +76,41 @@ const Board = () => {
   const onDragStart = (event) => {
     if (event.active.data.current?.type === 'List') {
       setActiveList(event.active.data.current.list)
+      return
+    }
+    if (event.active.data.current?.type === 'Task') {
+      setActiveTask(event.active.data.current.task)
+      return
+    }
+  }
+
+  const onDragOver = (event) => {
+    // TODO: should connect to backend
+    const { active, over } = event
+    if (!over) return
+
+    const activeTaskId = active.id
+    const overTaskId = over.id
+
+    if (activeTaskId === overTaskId) return
+
+    const isActiveTask = active.data.current?.type === 'Task'
+    const isOverTask = over.data.current?.type === 'Task'
+
+    if (isActiveTask && isOverTask) {
+      setTasks((tasks) => {
+        const activeIndex = tasks.findIndex((t) => t.id === activeTaskId)
+        const overIndex = tasks.findIndex((t) => t.id === overTaskId)
+        return arrayMove(tasks, activeIndex, overIndex)
+      })
     }
   }
 
   const onDragEnd = (event) => {
     // TODO: should connect to backend
+    setActiveList(null)
+    setActiveTask(null)
+
     const { active, over } = event
     if (!over) return
 
@@ -114,6 +147,7 @@ const Board = () => {
         sensors={sensors}
         onDragStart={onDragStart}
         onDragEnd={onDragEnd}
+        onDragOver={onDragOver}
       >
         <div className='m-auto flex gap-4'>
           <div className='flex gap-4'>
@@ -165,6 +199,13 @@ const Board = () => {
                 handleDeleteTask={handleDeleteTask}
                 handleUpdateTask={handleUpdateTask}
                 tasks={tasks.filter((task) => task.listId === activeList.id)}
+              />
+            )}
+            {activeTask && (
+              <Task
+                task={activeTask}
+                handleDeleteTask={handleDeleteTask}
+                handleUpdateTask={handleUpdateTask}
               />
             )}
           </DragOverlay>,

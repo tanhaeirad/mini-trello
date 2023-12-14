@@ -18,6 +18,9 @@ const List = (props) => {
   } = props
 
   const [editMode, setEditMode] = useState(false)
+  const tasksIds = useMemo(() => {
+    return tasks.map((task) => task.id)
+  }, [tasks])
 
   const {
     setNodeRef,
@@ -142,16 +145,18 @@ const List = (props) => {
       </div>
 
       <div className='flex flex-grow flex-col gap-4 p-2 overflow-x-hidden overflow-y-auto'>
-        {tasks.map((task) => {
-          return (
-            <Task
-              key={task.id}
-              task={task}
-              handleDeleteTask={handleDeleteTask}
-              handleUpdateTask={handleUpdateTask}
-            />
-          )
-        })}
+        <SortableContext items={tasksIds}>
+          {tasks.map((task) => {
+            return (
+              <Task
+                key={task.id}
+                task={task}
+                handleDeleteTask={handleDeleteTask}
+                handleUpdateTask={handleUpdateTask}
+              />
+            )
+          })}
+        </SortableContext>
       </div>
 
       <button

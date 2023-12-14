@@ -1,4 +1,7 @@
 import { useState } from 'react'
+import { useSortable } from '@dnd-kit/sortable'
+import { CSS } from '@dnd-kit/utilities'
+
 import DeleteIcon from '../Icons/DeleteIcon'
 
 const Task = (props) => {
@@ -7,14 +10,64 @@ const Task = (props) => {
   const [mouseIsOver, setMouseIsOver] = useState(false)
   const [editMode, setEditMode] = useState(false)
 
+  const {
+    setNodeRef,
+    attributes,
+    listeners,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({
+    id: task.id,
+    data: {
+      type: 'Task',
+      task,
+    },
+    disabled: editMode,
+  })
+
+  const style = {
+    transition,
+    transform: CSS.Transform.toString(transform),
+  }
+
   const toggleEditMode = () => {
     setEditMode((prev) => !prev)
     setMouseIsOver(false)
   }
 
+  if (isDragging) {
+    return (
+      <div
+        ref={setNodeRef}
+        style={style}
+        className='
+        opacity-30
+        bg-mainBackgroundColor
+        p-2.5
+        h-24
+        min-h-24
+        flex
+        items-center
+        text-left
+        rounded-xl
+        cursor-grab
+        relative
+        border-2
+        border-ring
+        border-rose-500
+        task
+      '
+      ></div>
+    )
+  }
   if (editMode) {
     return (
       <div
+        ref={setNodeRef}
+        style={style}
+        {...attributes}
+        {...listeners}
         onClick={toggleEditMode}
         className='
         bg-mainBackgroundColor
@@ -61,6 +114,10 @@ const Task = (props) => {
 
   return (
     <div
+      ref={setNodeRef}
+      style={style}
+      {...attributes}
+      {...listeners}
       onClick={toggleEditMode}
       className='
       bg-mainBackgroundColor
