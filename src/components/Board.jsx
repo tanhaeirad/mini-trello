@@ -36,6 +36,14 @@ const Board = () => {
     setLists(newLists)
   }
 
+  const handleUpdateList = (id, title) => {
+    const newList = lists.map((list) => {
+      if (list.id !== id) return list
+      return { ...list, title }
+    })
+    setLists(newList)
+  }
+
   const onDragStart = (event) => {
     if (event.active.data.current?.type === 'List') {
       setActiveList(event.active.data.current.list)
@@ -89,6 +97,7 @@ const Board = () => {
                   key={list.id}
                   list={list}
                   handleDeleteList={handleDeleteList}
+                  handleUpdateList={handleUpdateList}
                 />
               ))}
             </SortableContext>

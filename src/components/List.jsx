@@ -2,9 +2,12 @@ import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 
 import DeleteIcon from '../Icons/DeleteIcon'
+import { useState } from 'react'
 
 const List = (props) => {
-  const { list, handleDeleteList } = props
+  const { list, handleDeleteList, handleUpdateList } = props
+
+  const [editMode, setEditMode] = useState(false)
 
   const {
     setNodeRef,
@@ -19,6 +22,7 @@ const List = (props) => {
       type: 'List',
       list,
     },
+    disabled: editMode,
   })
 
   const style = {
@@ -63,6 +67,7 @@ const List = (props) => {
       <div
         {...attributes}
         {...listeners}
+        onClick={() => setEditMode(true)}
         className='
         bg-mainBackgroundColor
         text-base cursor-grab
@@ -92,7 +97,25 @@ const List = (props) => {
           >
             0
           </div>
-          {list.title}
+          {!editMode && list.title}
+          {/* TODO: should connect to backend */}
+          {editMode && (
+            <input
+              className='
+              bg-black focus:border-rose-500 border rounded outline-none px-2
+              '
+              value={list.title}
+              onChange={(event) =>
+                handleUpdateList(list.id, event.target.value)
+              }
+              autoFocus
+              onBlur={() => setEditMode(false)}
+              onKeyDown={(event) => {
+                if (event.key !== 'Enter') return
+                setEditMode(false)
+              }}
+            />
+          )}
         </div>
         <button
           onClick={() => handleDeleteList(list.id)}
