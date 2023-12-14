@@ -1,11 +1,21 @@
-import { useSortable } from '@dnd-kit/sortable'
+import { SortableContext, useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 
 import DeleteIcon from '../Icons/DeleteIcon'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
+import AddIcon from '../Icons/AddIcon'
+import Task from './Task'
 
 const List = (props) => {
-  const { list, handleDeleteList, handleUpdateList } = props
+  const {
+    list,
+    handleDeleteList,
+    handleUpdateList,
+    handleCreateTask,
+    tasks,
+    handleDeleteTask,
+    handleUpdateTask,
+  } = props
 
   const [editMode, setEditMode] = useState(false)
 
@@ -131,9 +141,40 @@ const List = (props) => {
         </button>
       </div>
 
-      <div className='flex flex-grow'>Content</div>
+      <div className='flex flex-grow flex-col gap-4 p-2 overflow-x-hidden overflow-y-auto'>
+        {tasks.map((task) => {
+          return (
+            <Task
+              key={task.id}
+              task={task}
+              handleDeleteTask={handleDeleteTask}
+              handleUpdateTask={handleUpdateTask}
+            />
+          )
+        })}
+      </div>
 
-      <div>Footer</div>
+      <button
+        className='
+        flex
+        gap-2
+        items-center
+        border-columnBackgroundColor
+        border-2
+        rounded-md
+        p-4
+        border-x-columnBackgroundColor
+        hover:bg-mainBackgroundColor
+        hover:text-rose-500
+        active:bg-black
+      '
+        onClick={() => {
+          handleCreateTask(list.id)
+        }}
+      >
+        <AddIcon />
+        Add a card
+      </button>
     </div>
   )
 }

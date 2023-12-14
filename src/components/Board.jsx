@@ -14,6 +14,7 @@ import { createPortal } from 'react-dom'
 const Board = () => {
   const [lists, setLists] = useState([])
   const [activeList, setActiveList] = useState(null)
+  const [tasks, setTasks] = useState([])
 
   const listsId = useMemo(() => lists.map((list) => list.id), [lists])
 
@@ -42,6 +43,31 @@ const Board = () => {
       return { ...list, title }
     })
     setLists(newList)
+  }
+
+  const handleCreateTask = (listId) => {
+    // TODO: should connect to backend
+    const newTask = {
+      id: generateId(),
+      listId,
+      content: `Card ${tasks.length + 1}`,
+    }
+    setTasks([...tasks, newTask])
+  }
+
+  const handleDeleteTask = (id) => {
+    // TODO: should connect to backend
+    const newTasks = tasks.filter((task) => task.id !== id)
+    setTasks(newTasks)
+  }
+
+  const handleUpdateTask = (id, content) => {
+    // TODO: should connect to backend
+    const newTasks = tasks.map((task) => {
+      if (task.id !== id) return task
+      return { ...task, content }
+    })
+    setTasks(newTasks)
   }
 
   const onDragStart = (event) => {
@@ -98,6 +124,10 @@ const Board = () => {
                   list={list}
                   handleDeleteList={handleDeleteList}
                   handleUpdateList={handleUpdateList}
+                  handleCreateTask={handleCreateTask}
+                  handleDeleteTask={handleDeleteTask}
+                  handleUpdateTask={handleUpdateTask}
+                  tasks={tasks.filter((task) => task.listId === list.id)}
                 />
               ))}
             </SortableContext>
@@ -125,7 +155,19 @@ const Board = () => {
           </button>
         </div>
         {createPortal(
-          <DragOverlay>{activeList && <List list={activeList} />}</DragOverlay>,
+          <DragOverlay>
+            {activeList && (
+              <List
+                list={activeList}
+                handleDeleteList={handleDeleteList}
+                handleUpdateList={handleUpdateList}
+                handleCreateTask={handleCreateTask}
+                handleDeleteTask={handleDeleteTask}
+                handleUpdateTask={handleUpdateTask}
+                tasks={tasks.filter((task) => task.listId === activeList.id)}
+              />
+            )}
+          </DragOverlay>,
           document.body
         )}
       </DndContext>
