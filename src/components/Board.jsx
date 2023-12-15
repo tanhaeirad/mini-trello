@@ -38,6 +38,9 @@ const Board = () => {
     // TODO: should connect to the backend instead
     const newLists = lists.filter((list) => list.id !== id)
     setLists(newLists)
+
+    const newTasks = tasks.filter((task) => task.listId !== id)
+    setTasks(newTasks)
   }
 
   const handleUpdateList = (id, title) => {
@@ -89,19 +92,35 @@ const Board = () => {
     const { active, over } = event
     if (!over) return
 
-    const activeTaskId = active.id
-    const overTaskId = over.id
+    const activeId = active.id
+    const overId = over.id
 
-    if (activeTaskId === overTaskId) return
+    if (activeId === overId) return
 
     const isActiveTask = active.data.current?.type === 'Task'
     const isOverTask = over.data.current?.type === 'Task'
 
+    if (!isActiveTask) return
+
     if (isActiveTask && isOverTask) {
       setTasks((tasks) => {
-        const activeIndex = tasks.findIndex((t) => t.id === activeTaskId)
-        const overIndex = tasks.findIndex((t) => t.id === overTaskId)
+        const activeIndex = tasks.findIndex((t) => t.id === activeId)
+        const overIndex = tasks.findIndex((t) => t.id === overId)
+
+        tasks[activeIndex].listId = tasks[overIndex].listId
+
         return arrayMove(tasks, activeIndex, overIndex)
+      })
+      return
+    }
+
+    const isOverList = over.data.current?.type === 'List'
+    if (isActiveTask && isOverList) {
+      setTasks((tasks) => {
+        const activeIndex = tasks.findIndex((t) => t.id === activeId)
+        tasks[activeIndex].listId = overId
+
+        return arrayMove(tasks, activeIndex, activeIndex)
       })
     }
   }
@@ -113,6 +132,10 @@ const Board = () => {
 
     const { active, over } = event
     if (!over) return
+
+    const isActiveList = active.data.current?.type === 'List'
+    const isOverList = over.data.current?.type === 'List'
+    if (!isActiveList || !isOverList) return
 
     const activeListId = active.id
     const overListId = over.id
