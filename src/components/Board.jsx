@@ -44,6 +44,8 @@ const Board = () => {
   }
 
   const handleUpdateList = (id, title) => {
+    // TODO: should connect to the backend instead
+
     const newList = lists.map((list) => {
       if (list.id !== id) return list
       return { ...list, title }

@@ -46,7 +46,7 @@ const Task = (props) => {
         bg-mainBackgroundColor
         p-2.5
         h-24
-        min-h-24
+        min-h-[6rem]
         flex
         items-center
         text-left
@@ -73,7 +73,7 @@ const Task = (props) => {
         bg-mainBackgroundColor
         p-2.5
         h-24
-        min-h-24
+        min-h-[6rem]
         flex
         items-center
         text-left
@@ -123,7 +123,7 @@ const Task = (props) => {
       bg-mainBackgroundColor
       p-2.5
       h-24
-      min-h-24
+      min-h-[6rem]
       flex
       items-center
       text-left
