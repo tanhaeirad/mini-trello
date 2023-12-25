@@ -1,0 +1,31 @@
+[project]
+name = "mini-trello"
+version = "0.1.0"
+description = "Default template for PDM package"
+authors = [
+    {name = "tanhaeirad", email = "tanhaeirad@icloud.com"},
+]
+dependencies = [
+    "graphene>=3.0",
+    "flask>=3.0.0",
+    "graphql-server>=3.0.0b7",
+]
+requires-python = ">=3.11"
+readme = "README.md"
+license = {text = "MIT"}
+
+[build-system]
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
+
+
+[tool.pdm]
+package-type = "library"
+
+[tool.pdm.scripts]
+start = "python run.py"
+
+[tool.pdm.dev-dependencies]
+dev = [
+    "black>=23.12.1",
+]
