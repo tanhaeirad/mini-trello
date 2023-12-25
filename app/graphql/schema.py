@@ -14,11 +14,8 @@ class Query(graphene.ObjectType):
         return BOARDS
 
     def resolve_board(self, info, id):
-        print("im here")
-        print(id)
-        res = next((item for item in BOARDS if item["id"] == id), None)
-        print(res)
-        return {"id": 1, "name": "Board 1"}
+        res = next((item for item in BOARDS if item["id"] == int(id)), None)
+        return res
 
 
     def resolve_lists(self, info):
