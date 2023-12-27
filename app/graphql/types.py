@@ -15,8 +15,8 @@ class Board(graphene.ObjectType):
 
 
 class List(graphene.ObjectType):
-    id = graphene.String(required=True)
-    board_id = graphene.String(required=True)
+    id = graphene.ID(required=True)
+    board_id = graphene.ID(required=True)
     name = graphene.String(required=True)
     index_order = graphene.Int(required=True)
     created_at = graphene.DateTime(required=True)
@@ -28,10 +28,30 @@ class List(graphene.ObjectType):
 
 
 class Task(graphene.ObjectType):
-    id = graphene.String(required=True)
-    board_id = graphene.String(required=True)
-    list_id = graphene.String(required=True)
+    id = graphene.ID(required=True)
+    board_id = graphene.ID(required=True)
+    list_id = graphene.ID(required=True)
     name = graphene.String(required=True)
     index_order = graphene.Int(required=True)
     created_at = graphene.DateTime(required=True)
     updated_at = graphene.DateTime(required=True)
+
+
+class CreateTaskInput(graphene.InputObjectType):
+    id = graphene.ID(required=True)
+    name = graphene.String(required=True)
+    board_id = graphene.ID(required=True)
+    list_id = graphene.ID(required=True)
+    index_order = graphene.Int(required=True)
+
+
+class CreateListInput(graphene.InputObjectType):
+    id = graphene.ID()
+    name = graphene.String()
+    board_id = graphene.ID()
+    index_order = graphene.Int()
+
+
+class CreateBoardInput(graphene.InputObjectType):
+    id = graphene.ID()
+    name = graphene.String()
