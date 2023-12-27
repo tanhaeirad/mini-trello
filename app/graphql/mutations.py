@@ -3,24 +3,22 @@ from .types import Task, List, Board, CreateTaskInput, CreateListInput, CreateBo
 from .test_data import TASKS, LISTS, BOARDS
 
 
-class CreateTask(graphene.Mutation):
+class CreateBoard(graphene.Mutation):
     class Arguments:
-        task_data = CreateTaskInput(required=True)
+        board_data = CreateBoardInput(required=True)
 
     ok = graphene.Boolean()
-    task = graphene.Field(lambda: Task)
+    board = graphene.Field(lambda: Board)
 
-    def mutate(root, info, task_data=None):
-        task = {
-            "id": task_data.id,
-            "name": task_data.name,
-            "board_id": task_data.board_id,
-            "list_id": task_data.list_id,
-            "index_order": task_data.index_order,
+    def mutate(root, info, board_data=None):
+        board = {
+            "id": board_data.id,
+            "name": board_data.name,
         }
+
         ok = True
-        TASKS.append(task)
-        return CreateTask(task=task, ok=ok)
+        BOARDS.append(board)
+        return CreateBoard(board=board, ok=ok)
 
 
 class CreateList(graphene.Mutation):
@@ -42,19 +40,21 @@ class CreateList(graphene.Mutation):
         return CreateList(list=list, ok=ok)
 
 
-class CreateBoard(graphene.Mutation):
+class CreateTask(graphene.Mutation):
     class Arguments:
-        board_data = CreateBoardInput(required=True)
+        task_data = CreateTaskInput(required=True)
 
     ok = graphene.Boolean()
-    board = graphene.Field(lambda: Board)
+    task = graphene.Field(lambda: Task)
 
-    def mutate(root, info, board_data=None):
-        board = {
-            "id": board_data.id,
-            "name": board_data.name,
+    def mutate(root, info, task_data=None):
+        task = {
+            "id": task_data.id,
+            "name": task_data.name,
+            "board_id": task_data.board_id,
+            "list_id": task_data.list_id,
+            "index_order": task_data.index_order,
         }
-
         ok = True
-        BOARDS.append(board)
-        return CreateBoard(board=board, ok=ok)
+        TASKS.append(task)
+        return CreateTask(task=task, ok=ok)
