@@ -42,11 +42,21 @@ class CreateBoardInput(graphene.InputObjectType):
     name = graphene.String()
 
 
+class UpdateBoardInput(graphene.InputObjectType):
+    name = graphene.String(required=False)
+
+
 class CreateListInput(graphene.InputObjectType):
     id = graphene.ID()
     name = graphene.String()
     board_id = graphene.ID()
     index_order = graphene.Int()
+
+
+class UpdateListInput(graphene.InputObjectType):
+    name = graphene.String(required=False)
+    board_id = graphene.ID(required=False)
+    index_order = graphene.Int(required=False)
 
 
 class CreateTaskInput(graphene.InputObjectType):
@@ -55,3 +65,10 @@ class CreateTaskInput(graphene.InputObjectType):
     board_id = graphene.ID(required=True)
     list_id = graphene.ID(required=True)
     index_order = graphene.Int(required=True)
+
+
+class UpdateTaskInput(graphene.InputObjectType):
+    name = graphene.String(required=False)
+    board_id = graphene.ID(required=False)
+    list_id = graphene.ID(required=False)
+    index_order = graphene.Int(required=False)

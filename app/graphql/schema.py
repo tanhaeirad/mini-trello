@@ -1,7 +1,14 @@
 import graphene
 from .test_data import BOARDS, LISTS, TASKS
 from .types import Board, List, Task
-from .mutations import CreateTask, CreateBoard, CreateList
+from .mutations import (
+    CreateTask,
+    CreateBoard,
+    CreateList,
+    UpdateBoard,
+    UpdateList,
+    UpdateTask,
+)
 
 
 class Query(graphene.ObjectType):
@@ -24,9 +31,12 @@ class Query(graphene.ObjectType):
 
 
 class Mutation(graphene.ObjectType):
-    create_task = CreateTask.Field()
-    create_list = CreateList.Field()
     create_board = CreateBoard.Field()
+    update_board = UpdateBoard.Field()
+    create_list = CreateList.Field()
+    update_list = UpdateList.Field()
+    create_task = CreateTask.Field()
+    update_task = UpdateTask.Field()
 
 
 my_schema = graphene.Schema(query=Query, mutation=Mutation)

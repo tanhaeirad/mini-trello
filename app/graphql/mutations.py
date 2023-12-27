@@ -1,5 +1,15 @@
 import graphene
-from .types import Task, List, Board, CreateTaskInput, CreateListInput, CreateBoardInput
+from .types import (
+    Task,
+    List,
+    Board,
+    CreateTaskInput,
+    CreateListInput,
+    CreateBoardInput,
+    UpdateBoardInput,
+    UpdateListInput,
+    UpdateTaskInput,
+)
 from .test_data import TASKS, LISTS, BOARDS
 
 
@@ -21,6 +31,26 @@ class CreateBoard(graphene.Mutation):
         return CreateBoard(board=board, ok=ok)
 
 
+class UpdateBoard(graphene.Mutation):
+    class Arguments:
+        id = graphene.ID(required=True)
+        board_data = UpdateBoardInput(required=True)
+
+    board = graphene.Field(lambda: Board)
+
+    def mutate(root, info, id, board_data):
+        board = next((item for item in BOARDS if item["id"] == id), None)
+
+        if not board:
+            raise Exception("Board not found")
+
+        for key, value in board_data.items():
+            if value is not None:
+                board[key] = value
+
+        return UpdateBoard(board=board)
+
+
 class CreateList(graphene.Mutation):
     class Arguments:
         list_data = CreateListInput(required=True)
@@ -38,6 +68,26 @@ class CreateList(graphene.Mutation):
         ok = True
         LISTS.append(list)
         return CreateList(list=list, ok=ok)
+
+
+class UpdateList(graphene.Mutation):
+    class Arguments:
+        id = graphene.ID(required=True)
+        list_data = UpdateListInput(required=True)
+
+    list = graphene.Field(lambda: List)
+
+    def mutate(root, info, id, list_data):
+        list = next((item for item in LISTS if item["id"] == id), None)
+
+        if not list:
+            raise Exception("list not found")
+
+        for key, value in list_data.items():
+            if value is not None:
+                list[key] = value
+
+        return UpdateList(list=list)
 
 
 class CreateTask(graphene.Mutation):
@@ -58,3 +108,23 @@ class CreateTask(graphene.Mutation):
         ok = True
         TASKS.append(task)
         return CreateTask(task=task, ok=ok)
+
+
+class UpdateTask(graphene.Mutation):
+    class Arguments:
+        id = graphene.ID(required=True)
+        task_data = UpdateTaskInput(required=True)
+
+    task = graphene.Field(lambda: Task)
+
+    def mutate(root, info, id, task_data):
+        task = next((item for item in TASKS if item["id"] == id), None)
+
+        if not task:
+            raise Exception("task not found")
+
+        for key, value in task_data.items():
+            if value is not None:
+                task[key] = value
+
+        return UpdateTask(task=task)
