@@ -41,7 +41,7 @@ const Task = (props) => {
       <div
         ref={setNodeRef}
         style={style}
-        className='
+        className="
         opacity-30
         bg-mainBackgroundColor
         p-2.5
@@ -57,7 +57,7 @@ const Task = (props) => {
         border-ring
         border-rose-500
         task
-      '
+      "
       ></div>
     )
   }
@@ -69,7 +69,7 @@ const Task = (props) => {
         {...attributes}
         {...listeners}
         onClick={toggleEditMode}
-        className='
+        className="
         bg-mainBackgroundColor
         p-2.5
         h-24
@@ -84,12 +84,12 @@ const Task = (props) => {
         cursor-grab
         relative
         task
-      '
+      "
       >
         <textarea
           value={task.content}
           autoFocus
-          placeholder='Task content'
+          placeholder="Task content"
           onBlur={toggleEditMode}
           onKeyDown={(e) => {
             if (e.key === 'Enter' && e.shiftKey) {
@@ -97,7 +97,7 @@ const Task = (props) => {
             }
           }}
           onChange={(e) => handleUpdateTask(task.id, e.target.value)}
-          className='
+          className="
           h-[90%]
           w-full
           resize-none
@@ -106,7 +106,7 @@ const Task = (props) => {
           bg-transparent
           text-white
           focus:outline-none
-        '
+        "
         ></textarea>
       </div>
     )
@@ -119,7 +119,7 @@ const Task = (props) => {
       {...attributes}
       {...listeners}
       onClick={toggleEditMode}
-      className='
+      className="
       bg-mainBackgroundColor
       p-2.5
       h-24
@@ -134,17 +134,17 @@ const Task = (props) => {
       cursor-grab
       relative
       task
-  '
+  "
       onMouseEnter={() => setMouseIsOver(true)}
       onMouseLeave={() => setMouseIsOver(false)}
     >
-      <p className='my-auto h-[90%] w-full overflow-y-auto overflow-x-hidden whitespace-pre-wrap'>
+      <p className="my-auto h-[90%] w-full overflow-y-auto overflow-x-hidden whitespace-pre-wrap">
         {task.content}
       </p>
       {mouseIsOver && (
         <button
           onClick={() => handleDeleteTask(task.id)}
-          className='
+          className="
           stroke-white
           absolute
           right-4
@@ -155,7 +155,7 @@ const Task = (props) => {
           rounded
           opacity-60
           hover:opacity-100
-        '
+        "
         >
           <DeleteIcon />
         </button>

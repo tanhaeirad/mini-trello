@@ -22,7 +22,7 @@ const Board = () => {
   const listsId = useMemo(() => lists.map((list) => list.id), [lists])
 
   const sensors = useSensors(
-    useSensor(PointerSensor, { activationConstraint: { distance: 5 } })
+    useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
   )
 
   const handleCreateList = () => {
@@ -146,7 +146,7 @@ const Board = () => {
 
     setLists((lists) => {
       const activeListIndex = lists.findIndex(
-        (list) => list.id === activeListId
+        (list) => list.id === activeListId,
       )
 
       const overListIndex = lists.findIndex((list) => list.id === overListId)
@@ -157,7 +157,7 @@ const Board = () => {
 
   return (
     <div
-      className='
+      className="
        m-auto
        flex
        min-h-screen
@@ -166,7 +166,7 @@ const Board = () => {
        overflow-x-auto
        overflow-y-hidden
        px-10
-     '
+     "
     >
       <DndContext
         sensors={sensors}
@@ -174,8 +174,8 @@ const Board = () => {
         onDragEnd={onDragEnd}
         onDragOver={onDragOver}
       >
-        <div className='m-auto flex gap-4'>
-          <div className='flex gap-4'>
+        <div className="m-auto flex gap-4">
+          <div className="flex gap-4">
             <SortableContext items={listsId}>
               {lists.map((list) => (
                 <List
@@ -192,7 +192,7 @@ const Board = () => {
             </SortableContext>
           </div>
           <button
-            className='
+            className="
              h-14
              w-80
              min-w-80
@@ -206,7 +206,7 @@ const Board = () => {
              cursor-pointer
              flex
              gap-2
-           '
+           "
             onClick={handleCreateList}
           >
             <AddIcon />
@@ -234,7 +234,7 @@ const Board = () => {
               />
             )}
           </DragOverlay>,
-          document.body
+          document.body,
         )}
       </DndContext>
     </div>
