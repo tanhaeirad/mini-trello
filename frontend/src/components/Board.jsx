@@ -14,14 +14,16 @@ import Task from './Task'
 import { useGetLists } from '../hooks/useGetLists'
 import { useGetTasks } from '../hooks/useGetTasks'
 import { useSwapListOrder } from '../hooks/useSwapListOrder'
+import { useCreateList } from '../hooks/useCreateList'
 
 const Board = () => {
   const { loadingLists, errorLists, lists: unsortedList } = useGetLists()
   const { loadingTasks, errorTasks, tasks } = useGetTasks()
+  const { loadingCreateList, errorCreateList, createList } = useCreateList()
   const swapListOrder = useSwapListOrder(unsortedList)
 
-  const error = errorLists || errorTasks
-  const loading = loadingLists || loadingTasks
+  const error = errorLists || errorTasks || errorCreateList
+  const loading = loadingLists || loadingTasks || loadingCreateList
 
   const [lists2, setLists] = useState([])
   const [tasks2, setTasks] = useState([])
@@ -41,11 +43,10 @@ const Board = () => {
 
   const handleCreateList = () => {
     // TODO: should connect to the backend instead
-    const newList = {
-      id: generateId(),
-      title: `List ${lists.length + 1}`,
-    }
-    setLists([...lists, newList])
+    const id = generateId()
+    const title = `List ${lists.length + 1}`
+    const indexOrder = lists.length + 1
+    createList(title, id, indexOrder)
   }
 
   const handleDeleteList = (id) => {
@@ -254,7 +255,7 @@ const Board = () => {
 
 // TODO: should remove after backend
 const generateId = () => {
-  return Math.floor(Math.random() * 100001)
+  return Math.floor(Math.random() * 100001).toString()
 }
 
 export default Board
