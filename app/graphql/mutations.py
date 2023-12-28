@@ -61,7 +61,7 @@ class CreateList(graphene.Mutation):
     def mutate(root, info, list_data=None):
         list = {
             "id": list_data.id,
-            "name": list_data.name,
+            "title": list_data.title,
             "board_id": list_data.board_id,
             "index_order": list_data.index_order,
         }
@@ -100,7 +100,7 @@ class CreateTask(graphene.Mutation):
     def mutate(root, info, task_data=None):
         task = {
             "id": task_data.id,
-            "name": task_data.name,
+            "content": task_data.content,
             "board_id": task_data.board_id,
             "list_id": task_data.list_id,
             "index_order": task_data.index_order,
