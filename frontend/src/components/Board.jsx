@@ -42,7 +42,6 @@ const Board = () => {
   )
 
   const handleCreateList = () => {
-    // TODO: should connect to the backend instead
     const id = generateId()
     const title = `List ${lists.length + 1}`
     const indexOrder = lists.length + 1
