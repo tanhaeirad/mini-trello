@@ -11,15 +11,29 @@ import {
 import { SortableContext, arrayMove } from '@dnd-kit/sortable'
 import { createPortal } from 'react-dom'
 import Task from './Task'
+import { useGetLists } from '../hooks/useGetLists'
+import { useGetTasks } from '../hooks/useGetTasks'
+import { useSwapListOrder } from '../hooks/useSwapListOrder'
 
 const Board = () => {
-  const [lists, setLists] = useState([])
-  const [tasks, setTasks] = useState([])
+  const { loadingLists, errorLists, lists: unsortedList } = useGetLists()
+  const { loadingTasks, errorTasks, tasks } = useGetTasks()
+  const swapListOrder = useSwapListOrder(unsortedList)
+
+  const error = errorLists || errorTasks
+  const loading = loadingLists || loadingTasks
+
+  const [lists2, setLists] = useState([])
+  const [tasks2, setTasks] = useState([])
 
   const [activeList, setActiveList] = useState(null)
   const [activeTask, setActiveTask] = useState(null)
 
-  const listsId = useMemo(() => lists.map((list) => list.id), [lists])
+  const lists = useMemo(() => {
+    return unsortedList?.slice().sort((a, b) => a.indexOrder - b.indexOrder)
+  }, [unsortedList])
+
+  const listsId = useMemo(() => lists?.map((list) => list.id) || [], [lists])
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
@@ -128,7 +142,6 @@ const Board = () => {
   }
 
   const onDragEnd = (event) => {
-    // TODO: should connect to backend
     setActiveList(null)
     setActiveTask(null)
 
@@ -144,16 +157,14 @@ const Board = () => {
 
     if (activeListId === overListId) return
 
-    setLists((lists) => {
-      const activeListIndex = lists.findIndex(
-        (list) => list.id === activeListId,
-      )
+    const activeIndexOrder = active.data.current.list.indexOrder
+    const overIndexOrder = over.data.current.list.indexOrder
 
-      const overListIndex = lists.findIndex((list) => list.id === overListId)
-
-      return arrayMove(lists, activeListIndex, overListIndex)
-    })
+    swapListOrder(activeListId, overListId, activeIndexOrder, overIndexOrder)
   }
+
+  if (loading) return <p>Loading...</p>
+  if (error) return <p>Error : {error.message}</p>
 
   return (
     <div
