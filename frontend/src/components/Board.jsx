@@ -15,11 +15,13 @@ import { useGetLists } from '../hooks/useGetLists'
 import { useGetTasks } from '../hooks/useGetTasks'
 import { useSwapListOrder } from '../hooks/useSwapListOrder'
 import { useCreateList } from '../hooks/useCreateList'
+import { useDeleteList } from '../hooks/useDeleteList'
 
 const Board = () => {
   const { loadingLists, errorLists, lists: unsortedList } = useGetLists()
   const { loadingTasks, errorTasks, tasks } = useGetTasks()
   const { loadingCreateList, errorCreateList, createList } = useCreateList()
+  const deleteList = useDeleteList()
   const swapListOrder = useSwapListOrder(unsortedList)
 
   const error = errorLists || errorTasks || errorCreateList
@@ -50,8 +52,7 @@ const Board = () => {
 
   const handleDeleteList = (id) => {
     // TODO: should connect to the backend instead
-    const newLists = lists.filter((list) => list.id !== id)
-    setLists(newLists)
+    deleteList(id)
 
     const newTasks = tasks.filter((task) => task.listId !== id)
     setTasks(newTasks)
