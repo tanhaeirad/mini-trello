@@ -27,7 +27,7 @@ export const DELETE_LIST = gql`
   }
 `
 
-export const UPDATE_LIST = gql`
+export const UPDATE_LIST_ORDER = gql`
   mutation UpdateList($id: ID!, $indexOrder: Int!) {
     updateList(id: $id, listData: { indexOrder: $indexOrder }) {
       list {

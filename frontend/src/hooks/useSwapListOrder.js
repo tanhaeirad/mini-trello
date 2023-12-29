@@ -1,9 +1,9 @@
 import { useMutation, gql } from '@apollo/client'
 import { GET_LISTS } from '../graphql/queries'
-import { UPDATE_LIST } from '../graphql/mutations'
+import { UPDATE_LIST_ORDER } from '../graphql/mutations'
 
 export const useSwapListOrder = (lists) => {
-  const [updateList] = useMutation(UPDATE_LIST, {
+  const [updateList] = useMutation(UPDATE_LIST_ORDER, {
     update: (cache, { data: { updateList } }) => {
       const existingLists = cache.readQuery({ query: GET_LISTS })
 
