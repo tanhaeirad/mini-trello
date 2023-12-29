@@ -37,3 +37,13 @@ export const UPDATE_LIST_ORDER = gql`
     }
   }
 `
+export const UPDATE_LIST_TITLE = gql`
+  mutation UpdateList($id: ID!, $title: String!) {
+    updateList(id: $id, listData: { title: $title }) {
+      list {
+        id
+        title
+      }
+    }
+  }
+`

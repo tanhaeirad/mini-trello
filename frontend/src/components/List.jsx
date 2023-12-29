@@ -18,6 +18,7 @@ const List = (props) => {
   } = props
 
   const [editMode, setEditMode] = useState(false)
+  const [inputValue, setInputValue] = useState(list.title)
   const tasksIds = useMemo(() => {
     return tasks.map((task) => task.id)
   }, [tasks])
@@ -111,21 +112,24 @@ const List = (props) => {
             0
           </div>
           {!editMode && list.title}
-          {/* TODO: should connect to backend */}
           {editMode && (
             <input
               className="
               bg-black focus:border-rose-500 border rounded outline-none px-2
               "
-              value={list.title}
-              onChange={(event) =>
-                handleUpdateList(list.id, event.target.value)
-              }
+              value={inputValue}
+              onChange={(event) => setInputValue(event.target.value)}
               autoFocus
-              onBlur={() => setEditMode(false)}
+              onBlur={() => {
+                setEditMode(false)
+                if (list.title !== inputValue)
+                  handleUpdateList(list.id, inputValue)
+              }}
               onKeyDown={(event) => {
                 if (event.key !== 'Enter') return
                 setEditMode(false)
+                if (list.title !== inputValue)
+                  handleUpdateList(list.id, inputValue)
               }}
             />
           )}
