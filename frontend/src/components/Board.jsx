@@ -20,12 +20,12 @@ import { useDeleteList } from '../hooks/useDeleteList'
 const Board = () => {
   const { loadingLists, errorLists, lists: unsortedList } = useGetLists()
   const { loadingTasks, errorTasks, tasks } = useGetTasks()
-  const { loadingCreateList, errorCreateList, createList } = useCreateList()
+  const createList = useCreateList()
   const deleteList = useDeleteList()
   const swapListOrder = useSwapListOrder(unsortedList)
 
-  const error = errorLists || errorTasks || errorCreateList
-  const loading = loadingLists || loadingTasks || loadingCreateList
+  const error = errorLists || errorTasks
+  const loading = loadingLists || loadingTasks
 
   const [lists2, setLists] = useState([])
   const [tasks2, setTasks] = useState([])
@@ -45,9 +45,7 @@ const Board = () => {
 
   const handleCreateList = () => {
     const id = generateId()
-    const title = `List ${lists.length + 1}`
-    const indexOrder = lists.length + 1
-    createList(title, id, indexOrder)
+    createList(id)
   }
 
   const handleDeleteList = (id) => {

@@ -12,6 +12,8 @@ export const CREATE_LIST = gql`
     ) {
       list {
         id
+        title
+        indexOrder
       }
     }
   }
