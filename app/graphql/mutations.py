@@ -89,10 +89,11 @@ class UpdateList(graphene.Mutation):
 
         return UpdateList(list=list)
 
+
 class DeleteList(graphene.Mutation):
     class Arguments:
         id = graphene.ID(required=True)
-    
+
     id = graphene.ID()
     ok = graphene.Boolean()
 
@@ -100,10 +101,11 @@ class DeleteList(graphene.Mutation):
         list = next((item for item in LISTS if item["id"] == id), None)
         if not list:
             raise Exception("list not found")
-        
+
         LISTS.remove(list)
         ok = True
         return DeleteList(id=id, ok=ok)
+
 
 class CreateTask(graphene.Mutation):
     class Arguments:

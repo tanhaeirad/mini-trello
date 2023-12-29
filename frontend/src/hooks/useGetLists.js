@@ -1,14 +1,5 @@
-import { useQuery, gql } from '@apollo/client'
-
-const GET_LISTS = gql`
-  query GetLists {
-    lists {
-      id
-      title
-      indexOrder
-    }
-  }
-`
+import { useQuery } from '@apollo/client'
+import { GET_LISTS } from '../graphql/queries'
 
 export const useGetLists = () => {
   const { loading: loadingLists, error: errorLists, data } = useQuery(GET_LISTS)

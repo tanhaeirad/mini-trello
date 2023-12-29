@@ -1,31 +1,6 @@
-import { useMutation, gql } from '@apollo/client'
-
-const CREATE_LIST = gql`
-  mutation CreateList($id: ID!, $title: String!, $indexOrder: Int!) {
-    createList(
-      listData: {
-        id: $id
-        title: $title
-        boardId: "1"
-        indexOrder: $indexOrder
-      }
-    ) {
-      list {
-        id
-      }
-    }
-  }
-`
-
-const GET_LISTS = gql`
-  query GetLists {
-    lists {
-      id
-      title
-      indexOrder
-    }
-  }
-`
+import { useMutation } from '@apollo/client'
+import { CREATE_LIST } from '../graphql/mutations'
+import { GET_LISTS } from '../graphql/queries'
 
 export const useCreateList = () => {
   const [

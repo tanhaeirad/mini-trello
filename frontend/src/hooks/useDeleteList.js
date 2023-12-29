@@ -1,13 +1,5 @@
-import { gql, useMutation } from '@apollo/client'
-
-const DELETE_LIST = gql`
-  mutation DeleteList($id: ID!) {
-    deleteList(id: $id) {
-      ok
-      id
-    }
-  }
-`
+import { useMutation } from '@apollo/client'
+import { DELETE_LIST } from '../graphql/mutations'
 
 export const useDeleteList = () => {
   const [deleteListMutation] = useMutation(DELETE_LIST, {

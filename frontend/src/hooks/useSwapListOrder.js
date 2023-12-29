@@ -1,25 +1,6 @@
 import { useMutation, gql } from '@apollo/client'
-
-const UPDATE_LIST = gql`
-  mutation UpdateList($id: ID!, $indexOrder: Int!) {
-    updateList(id: $id, listData: { indexOrder: $indexOrder }) {
-      list {
-        id
-        indexOrder
-      }
-    }
-  }
-`
-
-const GET_LISTS = gql`
-  query GetLists {
-    lists {
-      id
-      title
-      indexOrder
-    }
-  }
-`
+import { GET_LISTS } from '../graphql/queries'
+import { UPDATE_LIST } from '../graphql/mutations'
 
 export const useSwapListOrder = (lists) => {
   const [updateList] = useMutation(UPDATE_LIST, {
