@@ -5,6 +5,7 @@ from .mutations import (
     CreateTask,
     CreateBoard,
     CreateList,
+    DeleteList,
     UpdateBoard,
     UpdateList,
     UpdateTask,
@@ -35,6 +36,7 @@ class Mutation(graphene.ObjectType):
     update_board = UpdateBoard.Field()
     create_list = CreateList.Field()
     update_list = UpdateList.Field()
+    delete_list = DeleteList.Field()
     create_task = CreateTask.Field()
     update_task = UpdateTask.Field()
 
