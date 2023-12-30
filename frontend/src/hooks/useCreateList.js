@@ -31,10 +31,11 @@ export const useCreateList = () => {
       variables: { title, id, indexOrder: newIndexOrder },
       optimisticResponse: {
         createList: {
-          __typename: 'List',
-          id: id,
-          title: title,
-          indexOrder: newIndexOrder,
+          list: {
+            id: id,
+            title: title,
+            indexOrder: newIndexOrder,
+          },
         },
       },
     })
