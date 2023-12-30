@@ -31,7 +31,6 @@ const Board = () => {
   const error = errorLists || errorTasks
   const loading = loadingLists || loadingTasks
 
-  const [lists2, setLists] = useState([])
   const [tasks2, setTasks] = useState([])
 
   const [activeList, setActiveList] = useState(null)
@@ -66,15 +65,8 @@ const Board = () => {
   }
 
   const handleCreateTask = (listId) => {
-    // TODO: should connect to backend
     const id = generateId()
     createTask(id, listId)
-    // const newTask = {
-    //   id: generateId(),
-    //   listId,
-    //   content: `Card ${tasks.length + 1}`,
-    // }
-    // setTasks([...tasks, newTask])
   }
 
   const handleDeleteTask = (id) => {
