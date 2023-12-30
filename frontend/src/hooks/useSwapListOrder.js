@@ -15,7 +15,7 @@ export const useSwapListOrder = (lists) => {
       })
       cache.writeQuery({
         query: GET_LISTS,
-        data: { __typename: 'UpdateList', lists: newListArray },
+        data: { __typename: 'Query', lists: newListArray },
       })
     },
   })
