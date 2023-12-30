@@ -1,4 +1,4 @@
-import { useMutation, gql } from '@apollo/client'
+import { useMutation } from '@apollo/client'
 import { GET_LISTS } from '../graphql/queries'
 import { UPDATE_LIST_ORDER } from '../graphql/mutations'
 
