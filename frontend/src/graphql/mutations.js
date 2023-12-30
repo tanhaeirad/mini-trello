@@ -47,3 +47,28 @@ export const UPDATE_LIST_TITLE = gql`
     }
   }
 `
+export const CREATE_TASK = gql`
+  mutation createTask(
+    $id: ID!
+    $content: String!
+    $listId: ID!
+    $indexOrder: Int!
+  ) {
+    createTask(
+      taskData: {
+        id: $id
+        content: $content
+        listId: $listId
+        boardId: "1"
+        indexOrder: $indexOrder
+      }
+    ) {
+      task {
+        id
+        content
+        indexOrder
+        listId
+      }
+    }
+  }
+`
