@@ -9,6 +9,7 @@ from .mutations import (
     UpdateBoard,
     UpdateList,
     UpdateTask,
+    DeleteTask
 )
 
 
@@ -39,6 +40,7 @@ class Mutation(graphene.ObjectType):
     delete_list = DeleteList.Field()
     create_task = CreateTask.Field()
     update_task = UpdateTask.Field()
+    delete_task = DeleteTask.Field()
 
 
 my_schema = graphene.Schema(query=Query, mutation=Mutation)

@@ -145,3 +145,19 @@ class UpdateTask(graphene.Mutation):
                 task[key] = value
 
         return UpdateTask(task=task)
+
+class DeleteTask(graphene.Mutation):
+    class Arguments:
+        id = graphene.ID(required=True)
+
+    id = graphene.ID()
+    ok = graphene.Boolean()
+
+    def mutate(root, info, id):
+        task = next((item for item in TASKS if item["id"] == id), None)
+        if not task:
+            raise Exception("task not found")
+
+        TASKS.remove(task)
+        ok = True
+        return DeleteList(id=id, ok=ok)
