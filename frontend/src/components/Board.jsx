@@ -19,6 +19,7 @@ import { useDeleteList } from '../hooks/useDeleteList'
 import { useUpdateList } from '../hooks/useUpdateList'
 import { useCreateTask } from '../hooks/useCreateTask'
 import { useDeleteTask } from '../hooks/useDeleteTask'
+import { useSwapTaskOrder } from '../hooks/useSwapTaskOrder'
 
 const Board = () => {
   const { loadingLists, errorLists, lists: unsortedList } = useGetLists()
@@ -29,6 +30,7 @@ const Board = () => {
   const updateListTitle = useUpdateList()
   const createTask = useCreateTask()
   const deleteTask = useDeleteTask()
+  const swapTaskOrder = useSwapTaskOrder(tasks)
 
   const error = errorLists || errorTasks
   const loading = loadingLists || loadingTasks
@@ -110,25 +112,30 @@ const Board = () => {
     if (!isActiveTask) return
 
     if (isActiveTask && isOverTask) {
-      setTasks((tasks) => {
-        const activeIndex = tasks.findIndex((t) => t.id === activeId)
-        const overIndex = tasks.findIndex((t) => t.id === overId)
-
-        tasks[activeIndex].listId = tasks[overIndex].listId
-
-        return arrayMove(tasks, activeIndex, overIndex)
-      })
-      return
+      const activeTask = active.data.current.task
+      const overTask = over.data.current.task
+      if (activeTask.listId !== overTask.listId) {
+        swapTaskOrder(activeTask, overTask, true)
+        return
+      }
+      // // setTasks((tasks) => {
+      // //   const activeIndex = tasks.findIndex((t) => t.id === activeId)
+      // //   const overIndex = tasks.findIndex((t) => t.id === overId)
+      // //   tasks[activeIndex].listId = tasks[overIndex].listId
+      // //   return arrayMove(tasks, activeIndex, overIndex)
+      // // })
+      // // return
     }
 
     const isOverList = over.data.current?.type === 'List'
     if (isActiveTask && isOverList) {
-      setTasks((tasks) => {
-        const activeIndex = tasks.findIndex((t) => t.id === activeId)
-        tasks[activeIndex].listId = overId
+      console.log('there')
+      // setTasks((tasks) => {
+      //   const activeIndex = tasks.findIndex((t) => t.id === activeId)
+      //   tasks[activeIndex].listId = overId
 
-        return arrayMove(tasks, activeIndex, activeIndex)
-      })
+      //   return arrayMove(tasks, activeIndex, activeIndex)
+      // })
     }
   }
 
@@ -141,17 +148,28 @@ const Board = () => {
 
     const isActiveList = active.data.current?.type === 'List'
     const isOverList = over.data.current?.type === 'List'
-    if (!isActiveList || !isOverList) return
 
-    const activeListId = active.id
-    const overListId = over.id
+    const isActiveTask = active.data.current?.type === 'Task'
+    const isOverTask = over.data.current?.type === 'Task'
 
-    if (activeListId === overListId) return
+    if (isActiveList && isOverList) {
+      // List over List
+      const activeListId = active.id
+      const overListId = over.id
 
-    const activeIndexOrder = active.data.current.list.indexOrder
-    const overIndexOrder = over.data.current.list.indexOrder
+      if (activeListId === overListId) return
 
-    swapListOrder(activeListId, overListId, activeIndexOrder, overIndexOrder)
+      const activeIndexOrder = active.data.current.list.indexOrder
+      const overIndexOrder = over.data.current.list.indexOrder
+      swapListOrder(activeListId, overListId, activeIndexOrder, overIndexOrder)
+      return
+    }
+    const activeTask = active.data.current.task
+    const overTask = over.data.current.task
+
+    if (isActiveTask && isOverTask) {
+      swapTaskOrder(activeTask, overTask)
+    }
   }
 
   if (loading) return <p>Loading...</p>

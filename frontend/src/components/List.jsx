@@ -12,13 +12,16 @@ const List = (props) => {
     handleDeleteList,
     handleUpdateList,
     handleCreateTask,
-    tasks,
+    tasks: unsortedTasks,
     handleDeleteTask,
     handleUpdateTask,
   } = props
 
   const [editMode, setEditMode] = useState(false)
   const [inputValue, setInputValue] = useState(list.title)
+  const tasks = useMemo(() => {
+    return unsortedTasks?.slice().sort((a, b) => a.indexOrder - b.indexOrder)
+  }, [unsortedTasks])
   const tasksIds = useMemo(() => {
     return tasks.map((task) => task.id)
   }, [tasks])

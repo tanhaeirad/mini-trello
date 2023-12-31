@@ -80,3 +80,17 @@ export const DELETE_TASK = gql`
     }
   }
 `
+export const UPDATE_TASK_ORDER = gql`
+  mutation UpdateTask($id: ID!, $listId: ID!, $indexOrder: Int!) {
+    updateTask(
+      id: $id
+      taskData: { indexOrder: $indexOrder, listId: $listId }
+    ) {
+      task {
+        id
+        listId
+        indexOrder
+      }
+    }
+  }
+`
