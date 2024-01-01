@@ -20,6 +20,7 @@ import { useUpdateList } from '../hooks/useUpdateList'
 import { useCreateTask } from '../hooks/useCreateTask'
 import { useDeleteTask } from '../hooks/useDeleteTask'
 import { useSwapTaskOrder } from '../hooks/useSwapTaskOrder'
+import { useUpdateTask } from '../hooks/useUpdateTask'
 
 const Board = () => {
   const { loadingLists, errorLists, lists: unsortedList } = useGetLists()
@@ -31,6 +32,7 @@ const Board = () => {
   const createTask = useCreateTask()
   const deleteTask = useDeleteTask()
   const swapTaskOrder = useSwapTaskOrder(tasks)
+  const updateTask = useUpdateTask()
 
   const error = errorLists || errorTasks
   const loading = loadingLists || loadingTasks
@@ -77,12 +79,13 @@ const Board = () => {
   }
 
   const handleUpdateTask = (id, content) => {
+    updateTask(id, content)
     // TODO: should connect to backend
-    const newTasks = tasks.map((task) => {
-      if (task.id !== id) return task
-      return { ...task, content }
-    })
-    setTasks(newTasks)
+    // const newTasks = tasks.map((task) => {
+    //   if (task.id !== id) return task
+    //   return { ...task, content }
+    // })
+    // setTasks(newTasks)
   }
 
   const onDragStart = (event) => {

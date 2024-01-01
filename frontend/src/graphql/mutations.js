@@ -94,3 +94,13 @@ export const UPDATE_TASK_ORDER = gql`
     }
   }
 `
+export const UPDATE_TASK_CONTENT = gql`
+  mutation UpdateTask($id: ID!, $content: String!) {
+    updateTask(id: $id, taskData: { content: $content }) {
+      task {
+        id
+        content
+      }
+    }
+  }
+`

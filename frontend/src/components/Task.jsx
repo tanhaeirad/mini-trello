@@ -9,6 +9,7 @@ const Task = (props) => {
 
   const [mouseIsOver, setMouseIsOver] = useState(false)
   const [editMode, setEditMode] = useState(false)
+  const [inputValue, setInputValue] = useState(task.content)
 
   const {
     setNodeRef,
@@ -87,16 +88,22 @@ const Task = (props) => {
       "
       >
         <textarea
-          value={task.content}
+          value={inputValue}
           autoFocus
           placeholder="Task content"
-          onBlur={toggleEditMode}
+          onBlur={() => {
+            toggleEditMode()
+            if (task.content !== inputValue)
+              handleUpdateTask(task.id, inputValue)
+          }}
           onKeyDown={(e) => {
             if (e.key === 'Enter' && e.shiftKey) {
               toggleEditMode()
+              if (task.content !== inputValue)
+                handleUpdateTask(task.id, inputValue)
             }
           }}
-          onChange={(e) => handleUpdateTask(task.id, e.target.value)}
+          onChange={(e) => setInputValue(e.target.value)}
           className="
           h-[90%]
           w-full
