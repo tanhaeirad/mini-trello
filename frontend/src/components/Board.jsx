@@ -80,12 +80,6 @@ const Board = () => {
 
   const handleUpdateTask = (id, content) => {
     updateTask(id, content)
-    // TODO: should connect to backend
-    // const newTasks = tasks.map((task) => {
-    //   if (task.id !== id) return task
-    //   return { ...task, content }
-    // })
-    // setTasks(newTasks)
   }
 
   const onDragStart = (event) => {
