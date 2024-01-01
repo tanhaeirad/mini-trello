@@ -146,6 +146,7 @@ class UpdateTask(graphene.Mutation):
 
         return UpdateTask(task=task)
 
+
 class DeleteTask(graphene.Mutation):
     class Arguments:
         id = graphene.ID(required=True)

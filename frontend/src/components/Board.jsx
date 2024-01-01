@@ -37,8 +37,6 @@ const Board = () => {
   const error = errorLists || errorTasks
   const loading = loadingLists || loadingTasks
 
-  const [tasks2, setTasks] = useState([])
-
   const [activeList, setActiveList] = useState(null)
   const [activeTask, setActiveTask] = useState(null)
 
@@ -58,11 +56,7 @@ const Board = () => {
   }
 
   const handleDeleteList = (id) => {
-    // TODO: should connect to the backend instead
     deleteList(id)
-
-    const newTasks = tasks.filter((task) => task.listId !== id)
-    setTasks(newTasks)
   }
 
   const handleUpdateList = (id, title) => {
@@ -94,7 +88,6 @@ const Board = () => {
   }
 
   const onDragOver = (event) => {
-    // TODO: should connect to backend
     const { active, over } = event
     if (!over) return
 
@@ -115,25 +108,9 @@ const Board = () => {
         swapTaskOrder(activeTask, overTask, true)
         return
       }
-      // // setTasks((tasks) => {
-      // //   const activeIndex = tasks.findIndex((t) => t.id === activeId)
-      // //   const overIndex = tasks.findIndex((t) => t.id === overId)
-      // //   tasks[activeIndex].listId = tasks[overIndex].listId
-      // //   return arrayMove(tasks, activeIndex, overIndex)
-      // // })
-      // // return
     }
 
     const isOverList = over.data.current?.type === 'List'
-    if (isActiveTask && isOverList) {
-      console.log('there')
-      // setTasks((tasks) => {
-      //   const activeIndex = tasks.findIndex((t) => t.id === activeId)
-      //   tasks[activeIndex].listId = overId
-
-      //   return arrayMove(tasks, activeIndex, activeIndex)
-      // })
-    }
   }
 
   const onDragEnd = (event) => {

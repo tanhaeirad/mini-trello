@@ -9,7 +9,7 @@ from .mutations import (
     UpdateBoard,
     UpdateList,
     UpdateTask,
-    DeleteTask
+    DeleteTask,
 )
 
 
