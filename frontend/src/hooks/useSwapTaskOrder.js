@@ -1,25 +1,25 @@
 import { useMutation } from '@apollo/client'
-import { GET_TASKS } from '../graphql/queries'
+import { GET_DATA } from '../graphql/queries'
 import { UPDATE_TASK_ORDER } from '../graphql/mutations'
 
 export const useSwapTaskOrder = (tasks) => {
   const [updateTask] = useMutation(UPDATE_TASK_ORDER, {
     update: (cache, { data: { updateTask } }) => {
-      const existingTasks = cache.readQuery({ query: GET_TASKS })
-
-      const newTaskArray = existingTasks.tasks.map((task) => {
+      const existingData = cache.readQuery({ query: GET_DATA })
+      const updatedTasks = existingData.board.tasks.map((task) => {
         if (task.id === updateTask.task.id) {
-          return {
-            ...task,
-            indexOrder: updateTask.task.indexOrder,
-            listId: updateTask.task.listId,
-          }
+          return { ...task, indexOrder: updateTask.task.indexOrder }
         }
         return task
       })
       cache.writeQuery({
-        query: GET_TASKS,
-        data: { tasks: newTaskArray },
+        query: GET_DATA,
+        data: {
+          board: {
+            ...existingData.board,
+            tasks: updatedTasks,
+          },
+        },
       })
     },
   })
