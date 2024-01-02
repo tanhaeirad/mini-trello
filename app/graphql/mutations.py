@@ -11,6 +11,7 @@ from .types import (
     UpdateTaskInput,
 )
 from .test_data import TASKS, LISTS, BOARDS
+from app.db.utils import update_list
 
 
 class CreateBoard(graphene.Mutation):
@@ -78,16 +79,8 @@ class UpdateList(graphene.Mutation):
     list = graphene.Field(lambda: List)
 
     def mutate(root, info, id, list_data):
-        list = next((item for item in LISTS if item["id"] == id), None)
-
-        if not list:
-            raise Exception("list not found")
-
-        for key, value in list_data.items():
-            if value is not None:
-                list[key] = value
-
-        return UpdateList(list=list)
+        updated_list = update_list(id, list_data)
+        return UpdateList(list=updated_list)
 
 
 class DeleteList(graphene.Mutation):

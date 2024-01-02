@@ -1,17 +1,22 @@
 import graphene
 from .test_data import LISTS, TASKS
+from app.db.utils import get_all_lists_of_board, get_all_tasks_of_board
 
 
 # TODO: default value for created_at updated_at
 class Board(graphene.ObjectType):
     id = graphene.ID(required=True)
     name = graphene.String(required=True)
-    created_at = graphene.DateTime(required=True)
-    updated_at = graphene.DateTime(required=True)
+    created_at = graphene.String(required=True)
+    updated_at = graphene.String(required=True)
     lists = graphene.List(lambda: List)
+    tasks = graphene.List(lambda: Task)
 
     def resolve_lists(self, info):
-        return [lst for lst in LISTS if lst["board_id"] == self["id"]]
+        return get_all_lists_of_board(self["id"])
+
+    def resolve_tasks(self, info):
+        return get_all_tasks_of_board(self["id"])
 
 
 class List(graphene.ObjectType):
@@ -21,10 +26,10 @@ class List(graphene.ObjectType):
     index_order = graphene.Int(required=True)
     created_at = graphene.DateTime(required=True)
     updated_at = graphene.DateTime(required=True)
-    tasks = graphene.List(lambda: Task)
+    # tasks = graphene.List(lambda: Task)
 
-    def resolve_tasks(self, info):
-        return [tsk for tsk in TASKS if tsk["list_id"] == self["id"]]
+    # def resolve_tasks(self, info):
+    #     return [tsk for tsk in TASKS if tsk["list_id"] == self["id"]]
 
 
 class Task(graphene.ObjectType):
