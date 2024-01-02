@@ -37,7 +37,7 @@ class Query(graphene.ObjectType):
 class Mutation(graphene.ObjectType):
     # create_board = CreateBoard.Field()
     # update_board = UpdateBoard.Field()
-    # create_list = CreateList.Field()
+    create_list = CreateList.Field()
     update_list = UpdateList.Field()
     delete_list = DeleteList.Field()
     create_task = CreateTask.Field()

@@ -11,7 +11,7 @@ from .types import (
     UpdateTaskInput,
 )
 from .test_data import TASKS, LISTS, BOARDS
-from app.db.utils import update_list, update_task, delete_list, delete_task, create_task
+from app.db.utils import update_list, update_task, delete_list, delete_task, create_task, create_list
 
 
 class CreateBoard(graphene.Mutation):
@@ -60,14 +60,11 @@ class CreateList(graphene.Mutation):
     list = graphene.Field(lambda: List)
 
     def mutate(root, info, list_data=None):
-        list = {
-            "id": list_data.id,
-            "title": list_data.title,
-            "board_id": list_data.board_id,
-            "index_order": list_data.index_order,
-        }
+        title= list_data.title
+        index_order= list_data.index_order
+
+        list = create_list(title, index_order)
         ok = True
-        LISTS.append(list)
         return CreateList(list=list, ok=ok)
 
 
@@ -107,6 +104,7 @@ class CreateTask(graphene.Mutation):
         content = task_data.content
         list_id = task_data.list_id
         index_order = task_data.index_order
+
         task = create_task(list_id,content, index_order)
         ok = True
         return CreateTask(task=task, ok=ok)
