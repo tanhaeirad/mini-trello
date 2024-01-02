@@ -1,21 +1,26 @@
 import { useMutation } from '@apollo/client'
-import { GET_LISTS } from '../graphql/queries'
+import { GET_DATA } from '../graphql/queries'
 import { UPDATE_LIST_ORDER } from '../graphql/mutations'
 
 export const useSwapListOrder = (lists) => {
   const [updateList] = useMutation(UPDATE_LIST_ORDER, {
     update: (cache, { data: { updateList } }) => {
-      const existingLists = cache.readQuery({ query: GET_LISTS })
+      const existingData = cache.readQuery({ query: GET_DATA })
 
-      const newListArray = existingLists.lists.map((list) => {
+      const updatedLists = existingData.board.lists.map((list) => {
         if (list.id === updateList.list.id) {
           return { ...list, indexOrder: updateList.list.indexOrder }
         }
         return list
       })
       cache.writeQuery({
-        query: GET_LISTS,
-        data: { __typename: 'Query', lists: newListArray },
+        query: GET_DATA,
+        data: {
+          board: {
+            ...existingData.board,
+            lists: updatedLists,
+          },
+        },
       })
     },
   })

@@ -11,8 +11,9 @@ import {
 import { SortableContext, arrayMove } from '@dnd-kit/sortable'
 import { createPortal } from 'react-dom'
 import Task from './Task'
-import { useGetLists } from '../hooks/useGetLists'
-import { useGetTasks } from '../hooks/useGetTasks'
+// import { useGetLists } from '../hooks/useGetLists'
+// import { useGetTasks } from '../hooks/useGetTasks'
+import { useGetData } from '../hooks/useGetData'
 import { useSwapListOrder } from '../hooks/useSwapListOrder'
 import { useCreateList } from '../hooks/useCreateList'
 import { useDeleteList } from '../hooks/useDeleteList'
@@ -23,8 +24,9 @@ import { useSwapTaskOrder } from '../hooks/useSwapTaskOrder'
 import { useUpdateTask } from '../hooks/useUpdateTask'
 
 const Board = () => {
-  const { loadingLists, errorLists, lists: unsortedList } = useGetLists()
-  const { loadingTasks, errorTasks, tasks } = useGetTasks()
+  // const { loadingLists, errorLists, lists: unsortedList } = useGetLists()
+  // const { loadingTasks, errorTasks, tasks } = useGetTasks()
+  const { error, loading, lists: unsortedList, tasks } = useGetData()
   const createList = useCreateList()
   const deleteList = useDeleteList()
   const swapListOrder = useSwapListOrder(unsortedList)
@@ -34,8 +36,8 @@ const Board = () => {
   const swapTaskOrder = useSwapTaskOrder(tasks)
   const updateTask = useUpdateTask()
 
-  const error = errorLists || errorTasks
-  const loading = loadingLists || loadingTasks
+  // const error = errorLists || errorTasks
+  // const loading = loadingLists || loadingTasks
 
   const [activeList, setActiveList] = useState(null)
   const [activeTask, setActiveTask] = useState(null)
