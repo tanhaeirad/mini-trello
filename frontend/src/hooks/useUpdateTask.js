@@ -1,22 +1,22 @@
 import { useMutation } from '@apollo/client'
 import { UPDATE_TASK_CONTENT } from '../graphql/mutations'
-import { GET_TASKS } from '../graphql/queries'
+import { GET_DATA } from '../graphql/queries'
 
 export const useUpdateTask = () => {
   const [updateTaskMutation] = useMutation(UPDATE_TASK_CONTENT, {
     update(cache, { data: { updateTask } }) {
-      const existingTasks = cache.readQuery({ query: GET_TASKS })
+      const existingData = cache.readQuery({ query: GET_DATA })
 
-      if (existingTasks) {
-        const updatedTasks = existingTasks.tasks.map((task) =>
+      if (existingData) {
+        const updatedTasks = existingData.board.tasks.map((task) =>
           task.id === updateTask.task.id
             ? { ...task, content: updateTask.task.content }
             : task,
         )
 
         cache.writeQuery({
-          query: GET_TASKS,
-          data: { tasks: updatedTasks },
+          query: GET_DATA,
+          data: { board: { ...existingData.board, tasks: updatedTasks } },
         })
       }
     },
