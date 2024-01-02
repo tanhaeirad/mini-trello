@@ -1,24 +1,32 @@
 import { useMutation, useApolloClient } from '@apollo/client'
 import { CREATE_TASK } from '../graphql/mutations'
-import { GET_TASKS } from '../graphql/queries'
+import { GET_DATA } from '../graphql/queries'
 
 export const useCreateTask = () => {
   const client = useApolloClient()
   const [createTaskMutation] = useMutation(CREATE_TASK, {
     update(cache, { data: { createTask } }) {
-      const existingTasks = cache.readQuery({ query: GET_TASKS })
-      if (existingTasks) {
+      const existingData = cache.readQuery({ query: GET_DATA })
+      if (existingData) {
+        const updatedTasks = [...existingData.board.tasks, createTask.task]
         cache.writeQuery({
-          query: GET_TASKS,
-          data: { tasks: [...existingTasks.tasks, createTask.task] },
+          query: GET_DATA,
+          data: {
+            board: {
+              ...existingData.board,
+              tasks: updatedTasks,
+            },
+          },
         })
       }
     },
   })
 
   const createTask = (id, listId) => {
-    const existingTasks = client.readQuery({ query: GET_TASKS })
-    const tasks = existingTasks?.tasks?.filter((task) => task.listId === listId)
+    const existingTasks = client.readQuery({ query: GET_DATA })
+    const tasks = existingTasks?.board?.tasks?.filter(
+      (task) => task.listId === listId,
+    )
     const maxIndexOrder =
       tasks?.reduce((max, list) => Math.max(list.indexOrder, max), 0) || 0
     const newIndexOrder = maxIndexOrder + 1

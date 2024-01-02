@@ -40,7 +40,7 @@ class Mutation(graphene.ObjectType):
     # create_list = CreateList.Field()
     update_list = UpdateList.Field()
     delete_list = DeleteList.Field()
-    # create_task = CreateTask.Field()
+    create_task = CreateTask.Field()
     update_task = UpdateTask.Field()
     delete_task = DeleteTask.Field()
 

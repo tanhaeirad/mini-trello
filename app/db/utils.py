@@ -42,22 +42,24 @@ def create_list(board_id, title, index_order):
     return response, list_id
 
 
-def create_task(board_id, list_id, content, index_order):
+def create_task(list_id, content, index_order, board_id="1"):
     table = get_table(table_name)
     task_id = str(uuid.uuid4())
-    response = table.put_item(
-        Item={
-            "PK": f"BOARD#{board_id}",
-            "SK": f"TASK#{task_id}",
-            "id": task_id,
-            "content": content,
-            "list_id": list_id,
-            "index_order": index_order,
-            "created_at": datetime.now().isoformat(),
-            "updated_at": datetime.now().isoformat(),
-        }
-    )
-    return response, task_id
+    now = datetime.now().isoformat()
+
+    task_item = {
+        "PK": f"BOARD#{board_id}",
+        "SK": f"TASK#{task_id}",
+        "id": task_id,
+        "content": content,
+        "list_id": list_id,
+        "index_order": index_order,
+        "created_at": now,
+        "updated_at": now,
+    }
+
+    table.put_item(Item=task_item)
+    return task_item
 
 
 def get_all_tasks_of_board(board_id):
