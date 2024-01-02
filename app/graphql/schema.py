@@ -39,10 +39,10 @@ class Mutation(graphene.ObjectType):
     # update_board = UpdateBoard.Field()
     # create_list = CreateList.Field()
     update_list = UpdateList.Field()
-    # delete_list = DeleteList.Field()
+    delete_list = DeleteList.Field()
     # create_task = CreateTask.Field()
     update_task = UpdateTask.Field()
-    # delete_task = DeleteTask.Field()
+    delete_task = DeleteTask.Field()
 
 
 my_schema = graphene.Schema(query=Query, mutation=Mutation)

@@ -7,19 +7,20 @@ export const useDeleteList = () => {
       if (deleteList.ok) {
         cache.modify({
           fields: {
-            lists(existingListRefs, { readField }) {
-              return existingListRefs.filter(
+            board(existingBoardData, { readField }) {
+              const currentLists = existingBoardData.lists
+
+              const updatedLists = currentLists.filter(
                 (listRef) => readField('id', listRef) !== deleteList.id,
               )
+              return { ...existingBoardData, lists: updatedLists }
             },
           },
         })
       }
     },
     optimisticResponse: ({ id }) => ({
-      __typename: 'Mutation',
       deleteList: {
-        __typename: 'List',
         id: id,
         ok: true,
       },

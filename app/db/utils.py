@@ -114,3 +114,23 @@ def update_task( task_id, update_data, board_id="1"):
         ReturnValues="ALL_NEW" 
     )
     return response.get('Attributes')
+
+def delete_task(task_id, board_id="1"):
+    table = get_table(table_name)
+    response = table.delete_item(
+        Key={
+            'PK': f'BOARD#{board_id}',
+            'SK': f'TASK#{task_id}'
+        }
+    )
+    return response
+
+def delete_list( list_id, board_id="1" ):
+    table = get_table(table_name)
+    response = table.delete_item(
+        Key={
+            'PK': f'BOARD#{board_id}',
+            'SK': f'LIST#{list_id}'
+        }
+    )
+    return response

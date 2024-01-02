@@ -7,10 +7,13 @@ export const useDeleteTask = () => {
       if (deleteTask.ok) {
         cache.modify({
           fields: {
-            tasks(existingTaskRefs, { readField }) {
-              return existingTaskRefs.filter(
+            board(existingBoardData, { readField }) {
+              const currentTasks = existingBoardData.tasks
+
+              const updatedTasks = currentTasks.filter(
                 (taskRef) => readField('id', taskRef) !== deleteTask.id,
               )
+              return { ...existingBoardData, tasks: updatedTasks }
             },
           },
         })
@@ -18,7 +21,6 @@ export const useDeleteTask = () => {
     },
     optimisticResponse: ({ id }) => ({
       deleteTask: {
-        __typename: 'Task',
         id,
         ok: true,
       },
